@@ -14,12 +14,20 @@ task :sync_swagger_ui do
   File.read(idx).each_line do | line |
     if line =~ /require (.*)/
       file = "#{source}/#{$1.strip}"
-      FileUtils.cp_r file, file.gsub(source, js_destination), verbose: true
+      # hack to make throbber.gif available on asset pipeline
+      if $1.strip =~ /swagger-ui\.js/
+        contents = File.read file
+        File.open "#{file.gsub(source, js_destination)}.erb", "w" do | f |
+          f << contents.gsub("src='images/throbber.gif'", "src='<%= asset_path(\"throbber.gif\") %>'")
+        end
+      else
+        FileUtils.cp_r file, file.gsub(source, js_destination), verbose: true
+      end
     end
   end
 
   oauth_source = File.join source, "lib", "swagger-oauth.js"
-  oauth_dest   = js_destination.gsub "swagger-ui", "swagger-oauth.js"
+  oauth_dest   = js_destination.gsub "swagger-ui-src", "swagger-oauth.js"
 
   FileUtils.cp_r oauth_source, oauth_dest, verbose: true
 
