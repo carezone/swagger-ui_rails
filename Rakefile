@@ -4,7 +4,7 @@ require "bundler/gem_tasks"
 desc "Syncronize Swagger UI"
 task :sync_swagger_ui do
 
-  source      = File.join File.dirname(__FILE__), "swagger-ui-src", "dist"
+  source      = ENV['SWAGGER_UI'] || File.join(File.dirname(__FILE__), "swagger-ui-src", "dist")
   destination = File.join File.dirname(__FILE__), "app", "assets"
 
   js_destination = File.join destination, "javascripts", "swagger-ui"
@@ -27,9 +27,9 @@ task :sync_swagger_ui do
   end
 
   oauth_source = File.join source, "lib", "swagger-oauth.js"
-  oauth_dest   = js_destination.gsub "swagger-ui-src", "swagger-oauth.js"
+  # oauth_dest   = js_destination.gsub "swagger-ui-src", "swagger-oauth.js"
 
-  FileUtils.cp_r oauth_source, oauth_dest, verbose: true
+  FileUtils.cp_r oauth_source, js_destination, verbose: true
 
   css_destination = File.join destination, "stylesheets", "swagger-ui"
   css_source      = File.join source, "css"
