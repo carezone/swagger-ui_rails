@@ -10,7 +10,6 @@ task :sync_swagger_ui do
   js_destination = File.join destination, "javascripts", "swagger-ui"
 
   idx = File.join js_destination, "index.js"
-
   File.read(idx).each_line do | line |
     if line =~ /require (.*)/
       file = "#{source}/#{$1.strip}"
@@ -27,9 +26,9 @@ task :sync_swagger_ui do
   end
 
   oauth_source = File.join source, "lib", "swagger-oauth.js"
-  # oauth_dest   = js_destination.gsub "swagger-ui-src", "swagger-oauth.js"
+  oauth_dest   = File.join destination, "javascripts", "swagger-oauth.js"
 
-  FileUtils.cp_r oauth_source, js_destination, verbose: true
+  FileUtils.cp_r oauth_source, oauth_dest, verbose: true
 
   css_destination = File.join destination, "stylesheets", "swagger-ui"
   css_source      = File.join source, "css"
