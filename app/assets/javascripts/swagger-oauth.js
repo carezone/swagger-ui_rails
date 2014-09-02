@@ -7,7 +7,7 @@ var realm;
 function handleLogin() {
   var scopes = [];
 
-  if(window.swaggerUi.api.authSchemes
+  if(window.swaggerUi.api.authSchemes 
     && window.swaggerUi.api.authSchemes.oauth2
     && window.swaggerUi.api.authSchemes.oauth2.scopes) {
     scopes = window.swaggerUi.api.authSchemes.oauth2.scopes;
@@ -36,11 +36,7 @@ function handleLogin() {
           '<div class="api-popup-actions"><button class="api-popup-authbtn api-button green" type="button">Authorize</button><button class="api-popup-cancel api-button gray" type="button">Cancel</button></div>',
         '</div>',
         '</div>'].join(''));
-
-    if($('.swagger-section').length == 1)
-      $('.swagger-section').append(popupDialog);
-    else
-      $(document.body).append(popupDialog);
+    $(document.body).append(popupDialog);
 
     popup = popupDialog.find('ul.api-popup-scopes').empty();
     for (i = 0; i < scopes.length; i ++) {
@@ -52,72 +48,65 @@ function handleLogin() {
       str += '</label></li>';
       popup.append(str);
     }
+  }
 
+  var $win = $(window),
+    dw = $win.width(),
+    dh = $win.height(),
+    st = $win.scrollTop(),
+    dlgWd = popupDialog.outerWidth(),
+    dlgHt = popupDialog.outerHeight(),
+    top = (dh -dlgHt)/2 + st,
+    left = (dw - dlgWd)/2;
 
-    var $win = $(window),
-      dw = $win.width(),
-      dh = $win.height(),
-      st = $win.scrollTop(),
-      dlgWd = popupDialog.outerWidth(),
-      dlgHt = popupDialog.outerHeight(),
-      top = (dh -dlgHt)/2 + st,
-      left = (dw - dlgWd)/2;
+  popupDialog.css({
+    top: (top < 0? 0 : top) + 'px',
+    left: (left < 0? 0 : left) + 'px'
+  });
 
-    popupDialog.css({
-      top: (top < 0? 0 : top) + 'px',
-      left: (left < 0? 0 : left) + 'px'
-    });
+  popupDialog.find('button.api-popup-cancel').click(function() {
+    popupMask.hide();
+    popupDialog.hide();
+  });
+  popupDialog.find('button.api-popup-authbtn').click(function() {
+    popupMask.hide();
+    popupDialog.hide();
 
-    popupDialog.find('button.api-popup-cancel').click(function() {
-      popupMask.hide();
-      popupDialog.hide();
-    });
-    popupDialog.find('button.api-popup-authbtn').click(function() {
-      popupMask.hide();
-      popupDialog.hide();
+    var authSchemes = window.swaggerUi.api.authSchemes;
+    var host = window.location;
+    var pathname = location.pathname.substring(0, location.pathname.lastIndexOf("/"));
+    var redirectUrl = host.protocol + '//' + host.host + pathname + "/o2c.html";
+    var url = null;
 
-      var authSchemes = window.swaggerUi.api.authSchemes;
-      var location = window.location;
-      var locationUrl = location.protocol + '//' + location.host + location.pathname;
-      var redirectUrl = locationUrl.replace("index.html","").concat("/o2c.html").replace("//o2c.html","/o2c.html");
-      var url = null;
-
-      var p = window.swaggerUi.api.authSchemes;
-      for (var key in p) {
-        if (p.hasOwnProperty(key)) {
-          var o = p[key].grantTypes;
-          for(var t in o) {
-            if(o.hasOwnProperty(t) && t === 'implicit') {
-              var dets = o[t];
-              url = dets.loginEndpoint.url + "?response_type=token";
-              window.swaggerUi.tokenName = dets.tokenName;
-            }
+    for (var key in authSchemes) {
+      if (authSchemes.hasOwnProperty(key)) {
+        var o = authSchemes[key].grantTypes;
+        for(var t in o) {
+          if(o.hasOwnProperty(t) && t === 'implicit') {
+            var dets = o[t];
+            url = dets.loginEndpoint.url + "?response_type=token";
+            window.swaggerUi.tokenName = dets.tokenName;
           }
         }
       }
-      var scopes = [];
-      var scopeForUrl='';
-      var o = $('.api-popup-scopes').find('input:checked');
+    }
+    var scopes = []
+    var o = $('.api-popup-scopes').find('input:checked');
 
-      for(var k =0; k < o.length; k++) {
-        scopes.push($(o[k]).attr("scope"));
-        if(k > 0){
-      	  scopeForUrl+=' ';
-        }
-        scopeForUrl+=$(o[k]).attr("scope");
-      }
+    for(k =0; k < o.length; k++) {
+      scopes.push($(o[k]).attr("scope"));
+    }
 
-      window.enabledScopes=scopes;
+    window.enabledScopes=scopes;
 
+    url += '&redirect_uri=' + encodeURIComponent(redirectUrl);
+    url += '&realm=' + encodeURIComponent(realm);
+    url += '&client_id=' + encodeURIComponent(clientId);
+    url += '&scope=' + encodeURIComponent(scopes);
 
-      url += '&redirect_uri=' + encodeURIComponent(redirectUrl);
-      url += '&realm=' + encodeURIComponent(realm);
-      url += '&client_id=' + encodeURIComponent(clientId);
-      url += '&scope=' + encodeURIComponent(scopeForUrl);
+    window.open(url);
+  });
 
-      window.open(url);
-    });
-  }
   popupMask.show();
   popupDialog.show();
   return;
@@ -210,12 +199,12 @@ function onOAuthComplete(token) {
               // all scopes are satisfied
               $(o).find('.api-ic').addClass('ic-info');
               $(o).find('.api-ic').removeClass('ic-warning');
-              $(o).find('.api-ic').removeClass('ic-error');
+              $(o).find('.api-ic').removeClass('ic-error');          
             }
           }
         });
 
-        window.authorizations.add("key", new ApiKeyAuthorization("Authorization", "Bearer " + b, "header"));
+        window.authorizations.add("oauth2", new ApiKeyAuthorization("Authorization", "Bearer " + b, "header"));
       }
     }
   }
