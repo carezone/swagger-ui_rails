@@ -1,0 +1,24 @@
+diff --git a/src/main/coffeescript/view/ResourceView.coffee b/src/main/coffeescript/view/ResourceView.coffee
+index 8c9901e..fa2b9e7 100644
+--- a/src/main/coffeescript/view/ResourceView.coffee
++++ b/src/main/coffeescript/view/ResourceView.coffee
+@@ -19,11 +19,14 @@ class ResourceView extends Backbone.View
+ 
+       operation.nickname = id
+       operation.parentId = @model.id
+-      @addOperation operation 
+-
+-    $('.toggleEndpointList', @el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'))
+-    $('.collapseResource', @el).click(this.callDocs.bind(this, 'collapseOperationsForResource'))
+-    $('.expandResource', @el).click(this.callDocs.bind(this, 'expandOperationsForResoruce'))
++      @addOperation operation
++
++    try
++      $('.toggleEndpointList', @el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'))
++      $('.collapseResource', @el).click(this.callDocs.bind(this, 'collapseOperationsForResource'))
++      $('.expandResource', @el).click(this.callDocs.bind(this, 'expandOperationsForResource'))
++    catch error
++      console.warn error
+     
+     return @
+ 

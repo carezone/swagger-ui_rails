@@ -3,6 +3,7 @@
 cd swagger-ui-src
 npm install
 git apply ../001-Use-SwaggerHttp-for-File-Uploads.diff
+git apply ../002-Resource-Typo.diff
 rm -rf dist/
 npm run-script build
 git status

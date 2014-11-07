@@ -1520,7 +1520,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     ResourceView.prototype.initialize = function() {};
 
     ResourceView.prototype.render = function() {
-      var counter, id, methods, operation, _i, _len, _ref4;
+      var counter, error, id, methods, operation, _i, _len, _ref4;
       $(this.el).html(Handlebars.templates.resource(this.model));
       methods = {};
       _ref4 = this.model.operationsArray;
@@ -1537,9 +1537,14 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         operation.parentId = this.model.id;
         this.addOperation(operation);
       }
-      $('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));
-      $('.collapseResource', this.el).click(this.callDocs.bind(this, 'collapseOperationsForResource'));
-      $('.expandResource', this.el).click(this.callDocs.bind(this, 'expandOperationsForResoruce'));
+      try {
+        $('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));
+        $('.collapseResource', this.el).click(this.callDocs.bind(this, 'collapseOperationsForResource'));
+        $('.expandResource', this.el).click(this.callDocs.bind(this, 'expandOperationsForResource'));
+      } catch (_error) {
+        error = _error;
+        console.warn(error);
+      }
       return this;
     };
 
