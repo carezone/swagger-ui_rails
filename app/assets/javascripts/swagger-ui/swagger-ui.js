@@ -579,7 +579,7 @@ function program10(depth0,data) {
 function program11(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n        <input data-threescale-name='";
+  buffer += "\n				<input data-threescale-name='";
   if (stack1 = helpers.threescale_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.threescale_name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -598,7 +598,7 @@ function program11(depth0,data) {
 function program13(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n        <input data-threescale-name='";
+  buffer += "\n				<input data-threescale-name='";
   if (stack1 = helpers.threescale_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.threescale_name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -986,7 +986,11 @@ function program12(depth0,data) {
 function program13(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n				<input class='parameter required' minlength='1' name='";
+  buffer += "\n				<input data-threescale-name='";
+  if (stack1 = helpers.threescale_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.threescale_name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "' class='parameter required' minlength='1' name='";
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -1001,7 +1005,11 @@ function program13(depth0,data) {
 function program15(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n				<input class='parameter required' minlength='1' name='";
+  buffer += "\n				<input data-threescale-name='";
+  if (stack1 = helpers.threescale_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.threescale_name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "' class='parameter required' minlength='1' name='";
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
