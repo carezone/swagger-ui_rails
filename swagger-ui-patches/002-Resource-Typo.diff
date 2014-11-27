@@ -1,5 +1,18 @@
+diff --git a/package.json b/package.json
+index 2058443..280860c 100644
+--- a/package.json
++++ b/package.json
+@@ -19,7 +19,7 @@
+   "readmeFilename": "README.md",
+   "dependencies": {
+     "coffee-script": "~1.6.3",
+-    "swagger-client": "2.0.36",
++    "swagger-client": "2.0.39",
+     "handlebars": "~1.0.10",
+     "less": "~1.4.2"
+   }
 diff --git a/src/main/coffeescript/view/ResourceView.coffee b/src/main/coffeescript/view/ResourceView.coffee
-index 8c9901e..fa2b9e7 100644
+index 8c9901e..e3e0748 100644
 --- a/src/main/coffeescript/view/ResourceView.coffee
 +++ b/src/main/coffeescript/view/ResourceView.coffee
 @@ -19,11 +19,14 @@ class ResourceView extends Backbone.View
