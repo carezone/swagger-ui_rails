@@ -1,0 +1,63 @@
+diff --git a/src/main/coffeescript/view/OperationView.coffee b/src/main/coffeescript/view/OperationView.coffee
+index 631b62e..cbca64c 100644
+--- a/src/main/coffeescript/view/OperationView.coffee
++++ b/src/main/coffeescript/view/OperationView.coffee
+@@ -357,11 +357,12 @@ class OperationView extends Backbone.View
+       pre = $('<pre class="json" />').append(code)
+ 
+     response_body = pre
+-    $(".request_url", $(@el)).html("<pre></pre>") 
+-    $(".request_url pre", $(@el)).text(url);
++    $(".request_url", $(@el)).html("<pre></pre>")
++    $(".request_url pre", $(@el)).text(url)
++    $(".request_curl", $(@el)).html "<pre>" + @requestAsCurl(url) + "</pre>"
+     $(".response_code", $(@el)).html "<pre>" + response.status + "</pre>"
+     $(".response_body", $(@el)).html response_body
+-    $(".response_headers", $(@el)).html "<pre>" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>"
++    $(".response_headers", $(@el)).html "<pre>" + _.escape(JSON.stringify(headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>"
+     $(".response", $(@el)).slideDown()
+     $(".response_hider", $(@el)).show()
+     $(".response_throbber", $(@el)).hide()
+@@ -370,6 +371,29 @@ class OperationView extends Backbone.View
+     opts = @options.swaggerOptions
+     if opts.highlightSizeThreshold && response.data.length > opts.highlightSizeThreshold then response_body_el else hljs.highlightBlock(response_body_el)
+ 
++  requestAsCurl: (url)->
++    # TODO: append file upload data
++    "curl -v -X " + this.model.method.toUpperCase() + @getHeadersForCurl() + " " + url + @getBodyForCurl()
++
++  getBodyForCurl: ->
++    results = []
++    _.each @model.parameters, (param)=>
++      if(param.paramType is "body")
++        field = $("textarea[name='"+param.name+"']", $(@el))
++        if(field[0] isnt undefined)
++          results.push("-d '" + field[0].value + "'")
++    if (results.length is 0) then "" else " " + results.join(" ")
++
++  getHeadersForCurl: ->
++    results = []
++    _.each @model.parameters, (param)=>
++      if(param.paramType is "header")
++        field = $("input[name='"+param.name+"']", $(@el))
++        if(field[0] isnt undefined)
++          results.push("-H \"" + param.name + ":" + field[0].value + "\"")
++    # TODO: append resource headers via @model.resource.api.headers?
++    if (results.length is 0) then "" else " " + results.join(" ")
++
+   toggleOperationContent: ->
+     elem = $('#' + Docs.escapeResourceName(@model.parentId) + "_" + @model.nickname + "_content")
+     if elem.is(':visible') then Docs.collapseOperation(elem) else Docs.expandOperation(elem)
+diff --git a/src/main/template/operation.handlebars b/src/main/template/operation.handlebars
+index a5d6435..1949c28 100644
+--- a/src/main/template/operation.handlebars
++++ b/src/main/template/operation.handlebars
+@@ -90,6 +90,8 @@
+         <div class='response' style='display:none'>
+           <h4>Request URL</h4>
+           <div class='block request_url'></div>
++          <h4>cURL</h4>
++          <div class='block request_curl'></div>
+           <h4>Response Body</h4>
+           <div class='block response_body'></div>
+           <h4>Response Code</h4>

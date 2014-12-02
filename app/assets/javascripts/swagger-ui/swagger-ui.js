@@ -491,7 +491,7 @@ function program20(depth0,data) {
   buffer += "\n          ";
   stack1 = helpers['if'].call(depth0, depth0.isReadOnly, {hash:{},inverse:self.program(20, program20, data),fn:self.program(18, program18, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        </form>\n        <div class='response' style='display:none'>\n          <h4>Request URL</h4>\n          <div class='block request_url'></div>\n          <h4>Response Body</h4>\n          <div class='block response_body'></div>\n          <h4>Response Code</h4>\n          <div class='block response_code'></div>\n          <h4>Response Headers</h4>\n          <div class='block response_headers'></div>\n        </div>\n      </div>\n    </li>\n  </ul>\n";
+  buffer += "\n        </form>\n        <div class='response' style='display:none'>\n          <h4>Request URL</h4>\n          <div class='block request_url'></div>\n          <h4>cURL</h4>\n          <div class='block request_curl'></div>\n          <h4>Response Body</h4>\n          <div class='block response_body'></div>\n          <h4>Response Code</h4>\n          <div class='block response_code'></div>\n          <h4>Response Headers</h4>\n          <div class='block response_headers'></div>\n        </div>\n      </div>\n    </li>\n  </ul>\n";
   return buffer;
   });
 })();
@@ -2018,9 +2018,10 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       response_body = pre;
       $(".request_url", $(this.el)).html("<pre></pre>");
       $(".request_url pre", $(this.el)).text(url);
+      $(".request_curl", $(this.el)).html("<pre>" + this.requestAsCurl(url) + "</pre>");
       $(".response_code", $(this.el)).html("<pre>" + response.status + "</pre>");
       $(".response_body", $(this.el)).html(response_body);
-      $(".response_headers", $(this.el)).html("<pre>" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>");
+      $(".response_headers", $(this.el)).html("<pre>" + _.escape(JSON.stringify(headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>");
       $(".response", $(this.el)).slideDown();
       $(".response_hider", $(this.el)).show();
       $(".response_throbber", $(this.el)).hide();
@@ -2030,6 +2031,50 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         return response_body_el;
       } else {
         return hljs.highlightBlock(response_body_el);
+      }
+    };
+
+    OperationView.prototype.requestAsCurl = function(url) {
+      return "curl -v -X " + this.model.method.toUpperCase() + this.getHeadersForCurl() + " " + url + this.getBodyForCurl();
+    };
+
+    OperationView.prototype.getBodyForCurl = function() {
+      var results,
+        _this = this;
+      results = [];
+      _.each(this.model.parameters, function(param) {
+        var field;
+        if (param.paramType === "body") {
+          field = $("textarea[name='" + param.name + "']", $(_this.el));
+          if (field[0] !== void 0) {
+            return results.push("-d '" + field[0].value + "'");
+          }
+        }
+      });
+      if (results.length === 0) {
+        return "";
+      } else {
+        return " " + results.join(" ");
+      }
+    };
+
+    OperationView.prototype.getHeadersForCurl = function() {
+      var results,
+        _this = this;
+      results = [];
+      _.each(this.model.parameters, function(param) {
+        var field;
+        if (param.paramType === "header") {
+          field = $("input[name='" + param.name + "']", $(_this.el));
+          if (field[0] !== void 0) {
+            return results.push("-H \"" + param.name + ":" + field[0].value + "\"");
+          }
+        }
+      });
+      if (results.length === 0) {
+        return "";
+      } else {
+        return " " + results.join(" ");
       }
     };
 
