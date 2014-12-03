@@ -2034,8 +2034,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       }
     };
 
-    OperationView.prototype.requestAsCurl = function(url) {
-      return "curl -v -X " + this.model.method.toUpperCase() + this.getHeadersForCurl() + " " + url + this.getBodyForCurl();
+    OperationView.prototype.requestAsCurl = function(url, contentType) {
+      return "curl -v -X " + this.model.method.toUpperCase() + this.getHeadersForCurl(contentType) + " " + url + this.getBodyForCurl();
     };
 
     OperationView.prototype.getBodyForCurl = function() {
@@ -2046,7 +2046,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         var field;
         if (param.paramType === "body") {
           field = $("textarea[name='" + param.name + "']", $(_this.el));
-          if (field[0] !== void 0) {
+          if (field[0] !== void 0 && $.trim(field[0].value) !== "") {
             return results.push("-d '" + field[0].value + "'");
           }
         }
@@ -2058,7 +2058,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       }
     };
 
-    OperationView.prototype.getHeadersForCurl = function() {
+    OperationView.prototype.getHeadersForCurl = function(contentType) {
       var results,
         _this = this;
       results = [];
@@ -2066,11 +2066,15 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         var field;
         if (param.paramType === "header") {
           field = $("input[name='" + param.name + "']", $(_this.el));
-          if (field[0] !== void 0) {
+          if (field[0] !== void 0 && $.trim(field[0].value) !== "") {
             return results.push("-H \"" + param.name + ":" + field[0].value + "\"");
           }
         }
       });
+      contentType = contentType || $("div select[name=parameterContentType]", $(this.el)).val();
+      if (contentType) {
+        results.push("-H \"Content-Type:" + contentType + "\"");
+      }
       if (results.length === 0) {
         return "";
       } else {
