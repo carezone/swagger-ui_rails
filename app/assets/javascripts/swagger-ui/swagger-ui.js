@@ -2035,7 +2035,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.requestAsCurl = function(url, contentType) {
-      return "curl -v -X " + this.model.method.toUpperCase() + this.getHeadersForCurl(contentType) + " " + url + this.getBodyForCurl();
+      return "curl -v -X " + this.model.method.toUpperCase() + this.getHeadersForCurl(contentType) + " " + url + this.getBodyForCurl() + this.getFormForCurl();
     };
 
     OperationView.prototype.getBodyForCurl = function() {
@@ -2044,10 +2044,34 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       results = [];
       _.each(this.model.parameters, function(param) {
         var field;
-        if (param.paramType === "body") {
+        if (param.paramType.toLowerCase() === "body") {
           field = $("textarea[name='" + param.name + "']", $(_this.el));
           if (field[0] !== void 0 && $.trim(field[0].value) !== "") {
             return results.push("-d '" + field[0].value + "'");
+          }
+        }
+      });
+      if (results.length === 0) {
+        return "";
+      } else {
+        return " " + results.join(" ");
+      }
+    };
+
+    OperationView.prototype.getFormForCurl = function() {
+      var results,
+        _this = this;
+      results = [];
+      _.each(this.model.parameters, function(param) {
+        var field;
+        if (param.paramType.toLowerCase() === "form") {
+          field = $("input[name='" + param.name + "']", $(_this.el));
+          if (field[0] !== void 0 && $.trim(field[0].value) !== "") {
+            if (param.type.toLowerCase() === "file") {
+              return results.push("-F " + param.name + "=@\"" + field[0].value + "\"");
+            } else {
+              return results.push("-d \"" + param.name + "=" + field[0].value + "\"");
+            }
           }
         }
       });
@@ -2064,7 +2088,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       results = [];
       _.each(this.model.parameters, function(param) {
         var field;
-        if (param.paramType === "header") {
+        if (param.paramType.toLowerCase() === "header") {
           field = $("input[name='" + param.name + "']", $(_this.el));
           if (field[0] !== void 0 && $.trim(field[0].value) !== "") {
             return results.push("-H \"" + param.name + ":" + field[0].value + "\"");

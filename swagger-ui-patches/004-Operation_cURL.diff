@@ -1,5 +1,5 @@
 diff --git a/src/main/coffeescript/view/OperationView.coffee b/src/main/coffeescript/view/OperationView.coffee
-index 631b62e..917f9af 100644
+index 631b62e..85e29a7 100644
 --- a/src/main/coffeescript/view/OperationView.coffee
 +++ b/src/main/coffeescript/view/OperationView.coffee
 @@ -357,11 +357,12 @@ class OperationView extends Backbone.View
@@ -18,27 +18,39 @@ index 631b62e..917f9af 100644
      $(".response", $(@el)).slideDown()
      $(".response_hider", $(@el)).show()
      $(".response_throbber", $(@el)).hide()
-@@ -370,6 +371,34 @@ class OperationView extends Backbone.View
+@@ -370,6 +371,46 @@ class OperationView extends Backbone.View
      opts = @options.swaggerOptions
      if opts.highlightSizeThreshold && response.data.length > opts.highlightSizeThreshold then response_body_el else hljs.highlightBlock(response_body_el)
  
 +  requestAsCurl: (url, contentType)->
 +    # TODO: append file upload data
-+    "curl -v -X " + this.model.method.toUpperCase() + @getHeadersForCurl(contentType) + " " + url + @getBodyForCurl()
++    "curl -v -X " + this.model.method.toUpperCase() + @getHeadersForCurl(contentType) + " " + url + @getBodyForCurl() + @getFormForCurl()
 +
 +  getBodyForCurl: ->
 +    results = []
 +    _.each @model.parameters, (param)=>
-+      if(param.paramType is "body")
++      if(param.paramType.toLowerCase() is "body")
 +        field = $("textarea[name='"+param.name+"']", $(@el))
 +        if(field[0] isnt undefined and $.trim(field[0].value) isnt "")
 +          results.push("-d '" + field[0].value + "'")
 +    if (results.length is 0) then "" else " " + results.join(" ")
 +
++  getFormForCurl: ->
++    results = []
++    _.each @model.parameters, (param)=>
++      if(param.paramType.toLowerCase() is "form")
++        field = $("input[name='"+param.name+"']", $(@el))
++        if(field[0] isnt undefined and $.trim(field[0].value) isnt "")
++          if(param.type.toLowerCase() is "file")
++            results.push("-F " + param.name + "=@\"" + field[0].value + "\"")
++          else
++            results.push("-d \"" + param.name + "=" + field[0].value + "\"")
++    if (results.length is 0) then "" else " " + results.join(" ")
++
 +  getHeadersForCurl: (contentType)->
 +    results = []
 +    _.each @model.parameters, (param)=>
-+      if(param.paramType is "header")
++      if(param.paramType.toLowerCase() is "header")
 +        field = $("input[name='"+param.name+"']", $(@el))
 +        if(field[0] isnt undefined and $.trim(field[0].value) isnt "")
 +          results.push("-H \"" + param.name + ":" + field[0].value + "\"")
