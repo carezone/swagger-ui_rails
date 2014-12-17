@@ -2035,7 +2035,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.requestAsCurl = function(url, contentType) {
-      return "curl -v -X " + this.model.method.toUpperCase() + this.getHeadersForCurl(contentType) + " " + url + this.getBodyForCurl() + this.getFormForCurl();
+      return "curl -v -X " + this.model.method.toUpperCase() + this.getHeadersForCurl(contentType) + " \"" + url + "\"" + this.getBodyForCurl() + this.getFormForCurl();
     };
 
     OperationView.prototype.getBodyForCurl = function() {
