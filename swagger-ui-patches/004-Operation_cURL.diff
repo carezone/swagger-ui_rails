@@ -1,5 +1,5 @@
 diff --git a/src/main/coffeescript/view/OperationView.coffee b/src/main/coffeescript/view/OperationView.coffee
-index 631b62e..46fb006 100644
+index 631b62e..3a302f8 100644
 --- a/src/main/coffeescript/view/OperationView.coffee
 +++ b/src/main/coffeescript/view/OperationView.coffee
 @@ -357,11 +357,12 @@ class OperationView extends Backbone.View
@@ -23,7 +23,7 @@ index 631b62e..46fb006 100644
      if opts.highlightSizeThreshold && response.data.length > opts.highlightSizeThreshold then response_body_el else hljs.highlightBlock(response_body_el)
  
 +  requestAsCurl: (url, contentType)->
-+    "curl -v -X " + this.model.method.toUpperCase() + @getHeadersForCurl(contentType) + " \"" + url + "\"" + @getBodyForCurl() + @getFormForCurl()
++    "curl -v -X " + this.model.method.toUpperCase() + @getHeadersForCurl(contentType) + " \"" + _.escape(url) + "\"" + @getBodyForCurl() + @getFormForCurl()
 +
 +  getBodyForCurl: ->
 +    results = []
