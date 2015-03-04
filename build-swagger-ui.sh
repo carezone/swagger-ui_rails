@@ -1,17 +1,19 @@
 #!/bin/sh
 
-patches=`pwd`/swagger-ui-patches/*.diff
+# patches=`pwd`/swagger-ui-patches/*.diff
 
 cd swagger-ui-src
 # clean this
 rm -rf dist
 rm -rf node_modules
+
 # apply patches
-for f in $patches
-do
-  echo "--> patching $f"
-  git apply ${f}
-done
+#for f in $patches
+#do
+#  echo "--> patching $f"
+#  git apply ${f}
+#done
+
 # do the npm
 npm install
 npm run-script build
