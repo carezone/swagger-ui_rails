@@ -3,6 +3,10 @@
 .bundle
 .config
 .yardoc
+test/dummy/log/*.log
+test/dummy/tmp
+test/dummy/.bundle
+test/dummy/db/*
 Gemfile.lock
 InstalledFiles
 _yardoc
