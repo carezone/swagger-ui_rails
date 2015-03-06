@@ -199,6 +199,14 @@ var Docs = {
 	}
 };
 
+this["Handlebars"] = this["Handlebars"] || {};
+this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
+this["Handlebars"]["templates"]["apikey_button_view"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  return "<!--div class='auth_button' id='apikey_button'><img class='auth_icon' alt='apply api key' src='images/apikey.jpeg'></div-->\n<div class='auth_container' id='apikey_container'>\n  <div class='key_input_container'>\n    <div class='auth_label'>"
+    + escapeExpression(((helper = (helper = helpers.keyName || (depth0 != null ? depth0.keyName : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"keyName","hash":{},"data":data}) : helper)))
+    + "</div>\n    <input placeholder=\"api_key\" class=\"auth_input\" id=\"input_apiKey_entry\" name=\"apiKey\" type=\"text\"/>\n    <div class='auth_submit'><a class='auth_submit_button' id=\"apply_api_key\" href=\"#\">apply</a></div>\n  </div>\n</div>\n\n";
+},"useData":true});
 var SwaggerUi,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -385,14 +393,6 @@ SwaggerUi = (function(superClass) {
 
 window.SwaggerUi = SwaggerUi;
 
-this["Handlebars"] = this["Handlebars"] || {};
-this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
-this["Handlebars"]["templates"]["apikey_button_view"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-  return "<!--div class='auth_button' id='apikey_button'><img class='auth_icon' alt='apply api key' src='images/apikey.jpeg'></div-->\n<div class='auth_container' id='apikey_container'>\n  <div class='key_input_container'>\n    <div class='auth_label'>"
-    + escapeExpression(((helper = (helper = helpers.keyName || (depth0 != null ? depth0.keyName : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"keyName","hash":{},"data":data}) : helper)))
-    + "</div>\n    <input placeholder=\"api_key\" class=\"auth_input\" id=\"input_apiKey_entry\" name=\"apiKey\" type=\"text\"/>\n    <div class='auth_submit'><a class='auth_submit_button' id=\"apply_api_key\" href=\"#\">apply</a></div>\n  </div>\n</div>\n\n";
-},"useData":true});
 Handlebars.registerHelper('sanitize', function(html) {
   html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   return new Handlebars.SafeString(html);
@@ -475,61 +475,6 @@ this["Handlebars"]["templates"]["content_type"] = Handlebars.template({"1":funct
   if (stack1 != null) { buffer += stack1; }
   return buffer + "</select>\n";
 },"useData":true});
-var BasicAuthButton,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-BasicAuthButton = (function(superClass) {
-  extend(BasicAuthButton, superClass);
-
-  function BasicAuthButton() {
-    return BasicAuthButton.__super__.constructor.apply(this, arguments);
-  }
-
-  BasicAuthButton.prototype.initialize = function() {};
-
-  BasicAuthButton.prototype.render = function() {
-    var template;
-    template = this.template();
-    $(this.el).html(template(this.model));
-    return this;
-  };
-
-  BasicAuthButton.prototype.events = {
-    "click #basic_auth_button": "togglePasswordContainer",
-    "click #apply_basic_auth": "applyPassword"
-  };
-
-  BasicAuthButton.prototype.applyPassword = function() {
-    var elem, password, username;
-    username = $(".input_username").val();
-    password = $(".input_password").val();
-    window.authorizations.add(this.model.type, new PasswordAuthorization("basic", username, password));
-    window.swaggerUi.load();
-    return elem = $('#basic_auth_container').hide();
-  };
-
-  BasicAuthButton.prototype.togglePasswordContainer = function() {
-    var elem;
-    if ($('#basic_auth_container').length > 0) {
-      elem = $('#basic_auth_container').show();
-      if (elem.is(':visible')) {
-        return elem.slideUp();
-      } else {
-        $('.auth_container').hide();
-        return elem.show();
-      }
-    }
-  };
-
-  BasicAuthButton.prototype.template = function() {
-    return Handlebars.templates.basic_auth_button_view;
-  };
-
-  return BasicAuthButton;
-
-})(Backbone.View);
-
 this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression, buffer = "  <div class=\"info_title\">"
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.title : stack1), depth0))
@@ -613,32 +558,58 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
   if (stack1 != null) { buffer += stack1; }
   return buffer + "    </h4>\n    </div>\n</div>\n";
 },"useData":true});
-var ContentTypeView,
+var BasicAuthButton,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-ContentTypeView = (function(superClass) {
-  extend(ContentTypeView, superClass);
+BasicAuthButton = (function(superClass) {
+  extend(BasicAuthButton, superClass);
 
-  function ContentTypeView() {
-    return ContentTypeView.__super__.constructor.apply(this, arguments);
+  function BasicAuthButton() {
+    return BasicAuthButton.__super__.constructor.apply(this, arguments);
   }
 
-  ContentTypeView.prototype.initialize = function() {};
+  BasicAuthButton.prototype.initialize = function() {};
 
-  ContentTypeView.prototype.render = function() {
+  BasicAuthButton.prototype.render = function() {
     var template;
     template = this.template();
     $(this.el).html(template(this.model));
-    $('label[for=contentType]', $(this.el)).text('Response Content Type');
     return this;
   };
 
-  ContentTypeView.prototype.template = function() {
-    return Handlebars.templates.content_type;
+  BasicAuthButton.prototype.events = {
+    "click #basic_auth_button": "togglePasswordContainer",
+    "click #apply_basic_auth": "applyPassword"
   };
 
-  return ContentTypeView;
+  BasicAuthButton.prototype.applyPassword = function() {
+    var elem, password, username;
+    username = $(".input_username").val();
+    password = $(".input_password").val();
+    window.authorizations.add(this.model.type, new PasswordAuthorization("basic", username, password));
+    window.swaggerUi.load();
+    return elem = $('#basic_auth_container').hide();
+  };
+
+  BasicAuthButton.prototype.togglePasswordContainer = function() {
+    var elem;
+    if ($('#basic_auth_container').length > 0) {
+      elem = $('#basic_auth_container').show();
+      if (elem.is(':visible')) {
+        return elem.slideUp();
+      } else {
+        $('.auth_container').hide();
+        return elem.show();
+      }
+    }
+  };
+
+  BasicAuthButton.prototype.template = function() {
+    return Handlebars.templates.basic_auth_button_view;
+  };
+
+  return BasicAuthButton;
 
 })(Backbone.View);
 
@@ -745,6 +716,35 @@ this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function
   if (stack1 != null) { buffer += stack1; }
   return buffer + "        </form>\n        <div class='response' style='display:none'>\n          <h4>Request URL</h4>\n          <div class='block request_url'></div>\n          <h4>Response Body</h4>\n          <div class='block response_body'></div>\n          <h4>Response Code</h4>\n          <div class='block response_code'></div>\n          <h4>Response Headers</h4>\n          <div class='block response_headers'></div>\n        </div>\n      </div>\n    </li>\n  </ul>\n";
 },"useData":true});
+var ContentTypeView,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+ContentTypeView = (function(superClass) {
+  extend(ContentTypeView, superClass);
+
+  function ContentTypeView() {
+    return ContentTypeView.__super__.constructor.apply(this, arguments);
+  }
+
+  ContentTypeView.prototype.initialize = function() {};
+
+  ContentTypeView.prototype.render = function() {
+    var template;
+    template = this.template();
+    $(this.el).html(template(this.model));
+    $('label[for=contentType]', $(this.el)).text('Response Content Type');
+    return this;
+  };
+
+  ContentTypeView.prototype.template = function() {
+    return Handlebars.templates.content_type;
+  };
+
+  return ContentTypeView;
+
+})(Backbone.View);
+
 this["Handlebars"]["templates"]["param"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, buffer = "";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.isFile : depth0), {"name":"if","hash":{},"fn":this.program(2, data),"inverse":this.program(4, data),"data":data});
