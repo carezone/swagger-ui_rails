@@ -9,6 +9,7 @@ module Swagger
         Rails.application.config.assets.precompile += %w{ swagger-ui2.css }
         Rails.application.config.assets.precompile += %w{ swagger-ui2/reset.css }
         Rails.application.config.assets.precompile += %w{ swagger-ui2/screen.css }
+        Rails.application.config.assets.paths << root.join("app", "assets")
       end
     end
   end
