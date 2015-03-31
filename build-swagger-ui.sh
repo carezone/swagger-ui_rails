@@ -14,12 +14,13 @@ rm -rf node_modules
 #  git apply ${f}
 #done
 
-# do the npm
+# rebuild swagger-ui
 npm install
-npm run-script build
-# expose it to rails
+gulp
 git status
 cd ../
+
+# expose it to rails
 rake sync_swagger_ui
 # reset as it was before
 cd swagger-ui-src
