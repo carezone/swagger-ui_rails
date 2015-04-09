@@ -38,7 +38,26 @@ task :sync_swagger_ui do
   File.read(idx).each_line do | line |
     if line =~ /require (.*)\.css/
       file = "#{css_source}/#{$1.strip}.css"
-      FileUtils.cp_r file, file.gsub(css_source, css_destination), verbose: true
+      if file =~ /typography\.css\z/
+        destination = "#{file.gsub(css_source, css_destination)}.erb"
+        content = "/* Build: #{Time.now.to_s} */\n"
+        %w(droid-sans-v6-latin-regular droid-sans-v6-latin-700).each do | f |
+          %w(.eot .woff .woff2 .ttf .svg).each do | fmt |
+            content += "//= depend_on_asset \"#{f}#{fmt}\"\n"
+          end
+        end
+
+        content += "\n"
+
+        content += File.read(file).gsub(/'\.\.\/fonts\/([\w\-\.\?#]+.)'/) { "'<%= font_path('#{$1}') %>'"}
+
+        File.write(destination, content)
+
+        puts "filter #{file} #{destination}"
+
+      else
+        FileUtils.cp_r file, file.gsub(css_source, css_destination), verbose: true
+      end
     end
   end
 
