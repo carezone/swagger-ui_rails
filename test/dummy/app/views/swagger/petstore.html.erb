@@ -28,10 +28,16 @@
         });
       },
       onFailure: function(data) {
-        log("Unable to Load SwaggerUI");
+        console.log("[swagger-ui]>>> unable to load.");
       },
       docExpansion: "list",
-      sorter : "alpha"
+      sorter : "alpha",
+      transport: function(httpClient, obj) {
+        console.log("[swagger-ui]>>> executing custom transport function");
+        var result = httpClient.execute(obj);
+
+        return result;
+      }
     });
 
     window.swaggerUi.load();
