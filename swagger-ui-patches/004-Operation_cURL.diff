@@ -52,7 +52,7 @@ index 631b62e..b95bbe4 100644
 +      if(param.paramType.toLowerCase() is "header")
 +        field = $("input[name='"+param.name+"']", $(@el))
 +        if(field[0] isnt undefined and $.trim(field[0].value) isnt "")
-+          results.push("-H \"" + param.name + ":" + field[0].value + "\"")
++          results.push("-H \"" + param.name + ":" + field[0].value.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0') + "\"")
 +
 +    contentType = contentType || $("div select[name=parameterContentType]", $(@el)).val()
 +    if contentType

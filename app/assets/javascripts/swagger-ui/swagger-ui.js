@@ -2091,7 +2091,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         if (param.paramType.toLowerCase() === "header") {
           field = $("input[name='" + param.name + "']", $(_this.el));
           if (field[0] !== void 0 && $.trim(field[0].value) !== "") {
-            return results.push("-H \"" + param.name + ":" + field[0].value + "\"");
+            return results.push("-H \"" + param.name + ":" + field[0].value.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0') + "\"");
           }
         }
       });
