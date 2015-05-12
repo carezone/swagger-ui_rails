@@ -46,7 +46,7 @@ task :sync_swagger_ui do
         # url(../images/logo_small.png)
         # url('../images/throbber.gif')
         # url(../images/explorer_icons.png)
-        content += File.read(file).gsub(/url\('?\.\.\/images\/([\w\.]+)'?\)/) { "<%= image_path('#{$1}') %>"}
+        content += File.read(file).gsub(/url\('?\.\.\/images\/([\w\.]+)'?\)/) { "url('<%= image_path('#{$1}') %>')"}
 
         File.write(destination, content)
 

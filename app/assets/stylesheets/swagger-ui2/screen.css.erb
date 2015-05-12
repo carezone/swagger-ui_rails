@@ -1,4 +1,4 @@
-/* Build: 2015-05-12 13:20:48 +0200 */
+/* Build: 2015-05-12 17:15:04 +0200 */
 /* Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */
 .swagger-section pre code {
   display: block;
@@ -786,7 +786,7 @@
   padding: 6px 8px;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.content div.sandbox_header span.response_throbber {
-  background-image: <%= image_path('throbber.gif') %>;
+  background-image: url('<%= image_path('throbber.gif') %>');
   width: 128px;
   height: 16px;
   display: block;
@@ -1164,7 +1164,7 @@
   height: 18px;
   vertical-align: middle;
   display: inline-block;
-  background: <%= image_path('explorer_icons.png') %> no-repeat;
+  background: url('<%= image_path('explorer_icons.png') %>') no-repeat;
 }
 .swagger-section .ic-info {
   background-position: 0 0;
@@ -1204,7 +1204,7 @@
   font-size: 1.5em;
   font-weight: bold;
   text-decoration: none;
-  background: transparent <%= image_path('logo_small.png') %> no-repeat left center;
+  background: transparent url('<%= image_path('logo_small.png') %>') no-repeat left center;
   padding: 20px 0 20px 40px;
   color: white;
 }
