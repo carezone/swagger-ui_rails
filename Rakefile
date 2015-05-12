@@ -38,7 +38,21 @@ task :sync_swagger_ui do
   File.read(idx).each_line do | line |
     if line =~ /require (.*)\.css/
       file = "#{css_source}/#{$1.strip}.css"
-      if file =~ /typography\.css\z/
+      case file
+      when /screen\.css\z/
+        destination = "#{file.gsub(css_source, css_destination)}.erb"
+        content = "/* Build: #{Time.now.to_s} */\n"
+
+        # url(../images/logo_small.png)
+        # url('../images/throbber.gif')
+        # url(../images/explorer_icons.png)
+        content += File.read(file).gsub(/url\('?\.\.\/images\/([\w\.]+)'?\)/) { "<%= image_path('#{$1}') %>"}
+
+        File.write(destination, content)
+
+        puts "filter #{file} #{destination}"
+
+      when /typography\.css\z/
         destination = "#{file.gsub(css_source, css_destination)}.erb"
         content = "/* Build: #{Time.now.to_s} */\n"
         %w(droid-sans-v6-latin-regular droid-sans-v6-latin-700).each do | f |
