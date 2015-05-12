@@ -11459,6 +11459,7 @@ SwaggerUi.Views.ContentTypeView = Backbone.View.extend({
 
 SwaggerUi.Views.CurlView = Backbone.View.extend({
 
+  // operation.url
   // operation.model
   // operation.el
   initialize: function(opts) {
@@ -11493,16 +11494,17 @@ SwaggerUi.Views.CurlView = Backbone.View.extend({
 
     _.each(this.model.parameters, function(parameter) {
 
-      console.log('> processing parameter: ', parameter);
+      // console.log('> processing parameter: ', parameter);
 
       var field = $('input[name='+parameter.name+'], textarea[name='+parameter.name+']', $(this.parent));
 
-      console.log('> got field: ', field);
+      // console.log('> got field: ', field);
 
       if(field.length && field[0] !== 'undefined' && $.trim(field[0].value) !== '') {
 
         var name  = _.escape(parameter.name);
-        var value = field[0].value.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s/g, '');
+        // escape " and strip newlines and non-printable
+        var value = field[0].value.replace(/[\\"]/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\s/g, '');
 
         if(parameter.in.toLowerCase() === 'body') {
           this.params.body.push('-d "' + value + '"');
@@ -11516,9 +11518,9 @@ SwaggerUi.Views.CurlView = Backbone.View.extend({
         }
         else if(parameter.in.toLowerCase() === 'header') {
           this.params.header.push('-H "' + name + ':' + value + '"');
-        } else {
-          console.log('> skip parameter.in: ' + parameter.in);
-        }
+        } // else {
+          // console.log('> skip parameter.in: ' + parameter.in);
+        // }
       }
     }, this);
   },
