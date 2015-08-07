@@ -1,5 +1,5 @@
 require "fileutils"
-require "bundler/gem_tasks"
+# require "bundler/gem_tasks"
 
 desc "Syncronize Swagger UI"
 task :sync_swagger_ui do
