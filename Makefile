@@ -16,6 +16,7 @@ $(SWAGGER_UI)/dist: $(SWAGGER_UI)/node_modules $(SWAGGER_UI_SRC) $(PATCHES)
 
 $(SWAGGER_UI)/node_modules: $(SWAGGER_UI)/package.json
 	cd $(SWAGGER_UI); npm install
+	patch swagger-ui-src/node_modules/swagger-client/browser/swagger-client.js < swagger-ui-patches/swagger-client._diff
 
 $(SWAGGER_UI)/package.json : $(SWAGGER_UI)/.git
 
