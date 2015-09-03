@@ -1961,7 +1961,29 @@ SwaggerHttp.prototype.execute = function (obj, opts) {
       obj.body = JSON.stringify(obj.body);
     }
   }
-  client.execute(obj);
+
+
+  var transport = null;
+
+  if (opts && opts.transport) {
+    transport = opts.transport;
+  } else {
+    transport = function(httpClient, obj) {
+                    // do before request stuff
+                    // ....
+                    // execute the http request
+                    var result = httpClient.execute(obj);
+
+                    // do after request stuff
+                    // ...
+
+                    // remember to return the result
+                    return result;
+                };
+  }
+  return transport(client, obj);
+
+  // client.execute(obj);
 };
 
 SwaggerHttp.prototype.isInternetExplorer = function () {
@@ -3553,6 +3575,7 @@ SwaggerSpecConverter.prototype.parameters = function(operation, obj) {
     parameter.in = existingParameter.paramType;
 
     parameter['x-data-threescale-name'] = existingParameter['x-data-threescale-name'];
+
     // per #168
     if(parameter.in === 'body') {
       parameter.name = 'body';

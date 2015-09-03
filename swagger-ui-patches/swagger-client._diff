@@ -1,2 +1,29 @@
-2403a2404
+813c813,835
+<   client.execute(obj);
+---
+> 
+> 
+>   var transport = null;
+> 
+>   if (opts && opts.transport) {
+>     transport = opts.transport;
+>   } else {
+>     transport = function(httpClient, obj) {
+>                     // do before request stuff
+>                     // ....
+>                     // execute the http request
+>                     var result = httpClient.execute(obj);
+> 
+>                     // do after request stuff
+>                     // ...
+> 
+>                     // remember to return the result
+>                     return result;
+>                 };
+>   }
+>   return transport(client, obj);
+> 
+>   // client.execute(obj);
+2402a2425,2426
+> 
 >     parameter['x-data-threescale-name'] = existingParameter['x-data-threescale-name'];
