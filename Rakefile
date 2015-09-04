@@ -63,7 +63,7 @@ task :sync_swagger_ui do
 
         content += "\n"
 
-        content += File.read(file).gsub(/'\.\.\/fonts\/([\w\-\.\?#]+.)'/) { "'<%= font_path('#{$1}') %>'"}
+        content += File.read(file).gsub(/'\.\.\/fonts\/([\w\-\.]+)([?#]+\w+)?'/) { "'<%= font_path('#{$1}') %>#{$2}'"}
 
         File.write(destination, content)
 
