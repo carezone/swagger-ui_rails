@@ -24,3 +24,8 @@
 >   return transport(client, obj);
 > 
 >   // client.execute(obj);
+
+3293c3295
+<   if (headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+---
+>   if (headers['Content-Type'] === 'application/x-www-form-urlencoded' && param.in === 'formData') {
