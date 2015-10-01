@@ -24,6 +24,3 @@
 >   return transport(client, obj);
 > 
 >   // client.execute(obj);
-2402a2425,2426
-> 
->     parameter['x-data-threescale-name'] = existingParameter['x-data-threescale-name'];

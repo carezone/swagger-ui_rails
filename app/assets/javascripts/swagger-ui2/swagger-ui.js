@@ -3574,8 +3574,6 @@ SwaggerSpecConverter.prototype.parameters = function(operation, obj) {
     parameter.required = existingParameter.required;
     parameter.in = existingParameter.paramType;
 
-    parameter['x-data-threescale-name'] = existingParameter['x-data-threescale-name'];
-
     // per #168
     if(parameter.in === 'body') {
       parameter.name = 'body';
