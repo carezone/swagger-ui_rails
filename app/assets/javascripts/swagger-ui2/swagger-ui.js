@@ -4747,7 +4747,7 @@ Operation.prototype.asCurl = function (args1, args2) {
     var key;
 
     for (key in obj.headers) {
-      results.push('--header "' + key + ': ' + obj.headers[key] + '"');
+      results.push('--header "' + key + ': ' + obj.headers[key].replace(/"/g, '\\"') + '"');
     }
   }
 
