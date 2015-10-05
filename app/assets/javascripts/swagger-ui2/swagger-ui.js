@@ -4747,7 +4747,11 @@ Operation.prototype.asCurl = function (args1, args2) {
     var key;
 
     for (key in obj.headers) {
-      results.push('--header "' + key + ': ' + obj.headers[key].replace(/"/g, '\\"') + '"');
+      var value = obj.headers[key];
+      if(typeof value === 'string'){
+        value = value.replace(/"/g, '\\"');
+      }
+      results.push('--header "' + key + ': ' + value + '"');
     }
   }
 

@@ -30,8 +30,11 @@
 ---
 >   if (headers['Content-Type'] === 'application/x-www-form-urlencoded' && param.in === 'formData') {
 
-
-3599c3599
+3599c3599,3603
 <       results.push('--header "' + key + ': ' + obj.headers[key] + '"');
 ---
->       results.push('--header "' + key + ': ' + obj.headers[key].replace(/"/g, '\\"') + '"');
+>       var value = obj.headers[key];
+>       if(typeof value === 'string'){
+>         value = value.replace(/"/g, '\\"');
+>       }
+>       results.push('--header "' + key + ': ' + value + '"');
