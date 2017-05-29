@@ -1,32 +1,27 @@
 diff --git a/src/main/template/param.handlebars b/src/main/template/param.handlebars
-index d851632..e20b92c 100644
+index e38d53d..77e8af9 100644
 --- a/src/main/template/param.handlebars
 +++ b/src/main/template/param.handlebars
-@@ -20,9 +20,9 @@
- 			<div class="parameter-content-type" />
- 		{{else}}
- 			{{#if defaultValue}}
--				<input class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value='{{defaultValue}}'/>
-+				<input data-threescale-name='{{threescale_name}}' class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value='{{defaultValue}}'/>
- 			{{else}}
--				<input class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value=''/>
-+				<input data-threescale-name='{{threescale_name}}' class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value=''/>
- 			{{/if}}
- 		{{/if}}
- 	{{/if}}
-diff --git a/src/main/template/param_required.handlebars b/src/main/template/param_required.handlebars
-index 69e9370..231034a 100644
---- a/src/main/template/param_required.handlebars
-+++ b/src/main/template/param_required.handlebars
-@@ -17,9 +17,9 @@
- 			<input class='parameter' class='required' type='file' name='{{name}}'/>
- 		{{else}}
- 			{{#if defaultValue}}
--				<input class='parameter required' minlength='1' name='{{name}}' placeholder='(required)' type='text' value='{{defaultValue}}'/>
-+				<input data-threescale-name='{{threescale_name}}' class='parameter required' minlength='1' name='{{name}}' placeholder='(required)' type='text' value='{{defaultValue}}'/>
- 			{{else}}
--				<input class='parameter required' minlength='1' name='{{name}}' placeholder='(required)' type='text' value=''/>
-+				<input data-threescale-name='{{threescale_name}}' class='parameter required' minlength='1' name='{{name}}' placeholder='(required)' type='text' value=''/>
- 			{{/if}}
- 		{{/if}}
- 	{{/if}}
+@@ -8,11 +8,11 @@
+                {{else}}
+                        {{#if default}}
+                                <div class="editor_holder"></div>
+-                               <textarea class='body-textarea' name='{{{escape name}}}' id='{{{escape valueId}}}'>{{{escape default}}}</textarea>
++                               <textarea data-threescale-name='{{threescale_name}}' class='body-textarea' name='{{{escape name}}}' id='{{{escape valueId}}}'>{{{escape default}}}</textarea>
+         <br />
+         <div class="parameter-content-type" />
+                        {{else}}
+-                               <textarea class='body-textarea' name='{{{escape name}}}' id='{{{escape valueId}}}'></textarea>
++                               <textarea data-threescale-name='{{threescale_name}}' class='body-textarea' name='{{{escape name}}}' id='{{{escape valueId}}}'></textarea>
+                                <div class="editor_holder"></div>
+                                <br />
+                                <div class="parameter-content-type" />
+@@ -20,7 +20,7 @@
+                {{/if}}
+        {{else}}
+                {{#if isFile}}
+-                       <input type="file" name='{{{escape name}}}' id='{{{escape valueId}}}'/>
++                       <input data-threescale-name='{{threescale_name}}' type="file" name='{{{escape name}}}' id='{{{escape valueId}}}'/>
+                        <div class="parameter-content-type" />
+                {{else}}
+                        {{#renderTextParam this}}
