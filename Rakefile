@@ -1,4 +1,8 @@
 require "fileutils"
+require 'sprockets'
+require 'logger'
+require 'pathname'
+
 
 desc "Syncronize Swagger UI"
 task :sync_swagger_ui do
@@ -74,4 +78,30 @@ task :sync_swagger_ui do
     end
   end
 
+end
+
+
+ROOT        = Pathname(File.dirname(__FILE__))
+LOGGER      = Logger.new(STDOUT)
+BUNDLES     = %w( index.css index.js )
+BUILD_DIR   = ROOT.join('build')
+SOURCE_DIR  = ROOT.join('app/assets')
+
+desc 'Compile Assets'
+task :precompile_assets do
+  system 'rm -rf build'
+
+  env = Sprockets::Environment.new(ROOT) do |env|
+    env.logger = LOGGER
+    env.append_path(SOURCE_DIR.join('javascripts/swagger-ui2').to_s)
+    env.append_path(SOURCE_DIR.join('stylesheets/swagger-ui2').to_s)
+
+  end
+  BUNDLES.each do |bundle|
+    assets = env.find_asset(bundle)
+    prefix, basename = assets.pathname.to_s.split('/')[-2..-1]
+    FileUtils.mkpath BUILD_DIR.join(prefix)
+
+    assets.write_to(BUILD_DIR.join(prefix, basename))
+  end
 end
