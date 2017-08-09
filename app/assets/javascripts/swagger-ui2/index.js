@@ -14,3 +14,5 @@
 //= require ./lib/sanitize-html.min.js
 //= require ./lib/swagger-oauth.js
 //= require ./swagger-ui.js
+//= require ./lib/api_docs_proxy.coffee
+//= require ./lib/autocomplete.coffee
