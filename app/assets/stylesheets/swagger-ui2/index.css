@@ -1,6 +1,5 @@
 /*
- *= require ./typography.css
- *= require ./reset.css
- *= require ./screen.css
+*= require ./typography.css
+*= require ./screen.css
+*= require ./threescale.scss
  */
-
