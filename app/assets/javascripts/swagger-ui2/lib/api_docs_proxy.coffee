@@ -9,7 +9,7 @@ class ApiDocsProxy
   NO_CACHE_HEADERS = { "Cache-Control": "no-cache"  }
 
   execute: (httpClient, obj) ->
-    if ApiDocsProxy.forceHttps
+    if @forceHttps()
       if @originHttps() then obj.url = @forceHttpsProtocol obj.url
     @createLinkElement obj.url
     obj.originalUrl = obj.url
@@ -41,6 +41,9 @@ class ApiDocsProxy
     'X-Apidocs-Query' : @linkElement.search.replace("?", "")
   }
 
+  forceHttps: ->
+    false
+
   originHttps: ->
     window.top.location.protocol == 'https:'
 
@@ -56,7 +59,7 @@ class ApiDocsProxy
     @linkElement
 
   sameOrigin: ->
-    if ApiDocsProxy.forceHttps
+    if @forceHttps()
       true
     else
       @desiredOrigin() == @locationOrigin()
