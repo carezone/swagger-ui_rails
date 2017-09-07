@@ -14,5 +14,5 @@
 //= require ./lib/swagger-oauth.js
 //= require ./lib/js-yaml.min.js
 //= require ./lib/sanitize-html.min.js
-//= require ./lib/api_docs_proxy.js
-//= require ./lib/autocomplete.js
+//= require ./lib/api_docs_proxy.coffee
+//= require ./lib/autocomplete.coffee
