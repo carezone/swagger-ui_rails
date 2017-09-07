@@ -6,7 +6,7 @@ class ThreeScaleAutoComplete
     @currentField = null
 
     $(document).on "click", "div.apidocs-signin-message a", (event)=>
-      window.location = ThreeScaleAutoComplete.Config.login_url
+      window.top.location = ThreeScaleAutoComplete.Config.login_url
       false
 
     $(document).on "click", "#swagger-ui-container", (event)=>

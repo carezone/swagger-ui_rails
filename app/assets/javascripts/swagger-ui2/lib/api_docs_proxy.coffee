@@ -1,7 +1,7 @@
 # Inline hack to fix missing .origin from some browsers (such as IE < 11)
-unless window.location.origin
-  port_part = if window.location.port then ":" + window.location.port else ""
-  window.location.origin = window.location.protocol + "//" + window.location.hostname + port_part
+unless window.top.location.origin
+  port_part = if window.top.location.port then ":" + window.top.location.port else ""
+  window.top.location.origin = window.top.location.protocol + "//" + window.top.location.hostname + port_part
 
 # Route all requests not having same origin to api docs proxy
 class ApiDocsProxy
