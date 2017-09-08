@@ -3503,8 +3503,8 @@ SwaggerClient.prototype.initialize = function (url, options) {
 
   if(this.url && this.url.indexOf('http:') === -1 && this.url.indexOf('https:') === -1) {
     // no protocol, so we can only use window if it exists
-    if(typeof(window) !== 'undefined' && typeof(window.location) !== 'undefined') {
-      this.url = window.location.origin + this.url;
+    if(typeof(window) !== 'undefined' && typeof(window.top.location) !== 'undefined') {
+      this.url = window.top.location.origin + this.url;
     }
   }
 
@@ -3727,19 +3727,19 @@ SwaggerClient.prototype.buildFromSpec = function (response) {
       if (typeof location !== 'undefined' && typeof(location.scheme) !== 'undefined') {
         this.scheme = location.scheme;
       }
-      if(typeof window !== 'undefined' && typeof(window.location) !== 'undefined') {
+      if(typeof window !== 'undefined' && typeof(window.top.location) !== 'undefined') {
         // use the window scheme
-        this.scheme = window.location.protocol.replace(':','');
+        this.scheme = window.top.location.protocol.replace(':','');
       }
       else {
         this.scheme = location.scheme || 'http';
       }
-    } else if (typeof window !== 'undefined' && typeof(window.location) !== 'undefined' && window.location.protocol.indexOf('chrome-extension') === 0) {
+    } else if (typeof window !== 'undefined' && typeof(window.top.location) !== 'undefined' && window.top.location.protocol.indexOf('chrome-extension') === 0) {
 		// if it is chrome swagger ui extension scheme then let swagger doc url scheme decide the protocol
 		this.scheme = location.scheme;
 	} else if (typeof this.scheme === 'undefined') {
-      if(typeof window !== 'undefined' && typeof(window.location) !== 'undefined') {
-        var scheme = window.location.protocol.replace(':','');
+      if(typeof window !== 'undefined' && typeof(window.top.location) !== 'undefined') {
+        var scheme = window.top.location.protocol.replace(':','');
         if(scheme === 'https' && this.schemes.indexOf(scheme) === -1) {
           // can't call http from https served page in a browser!
           helpers.log('Cannot call a http server from https inside a browser!');
@@ -6765,7 +6765,7 @@ var Operation = module.exports = function (parent, scheme, operationId, httpMeth
 
   if(!this.host) {
     if(typeof window !== 'undefined') {
-      this.host = window.location.host;
+      this.host = window.top.location.host;
     }
     else {
       this.host = 'localhost';
@@ -21864,7 +21864,7 @@ window.SwaggerUi = Backbone.Router.extend({
     }
     var url = this.options.url;
     if (url && url.indexOf('http') !== 0) {
-      url = this.buildUrl(window.location.href.toString(), url);
+      url = this.buildUrl(window.top.location.href.toString(), url);
     }
     if(this.api) {
       this.options.authorizations = this.api.clientAuthorizations.authz;
@@ -22520,7 +22520,7 @@ SwaggerUi.Views.AuthView = Backbone.View.extend({
 
     // taken from lib/swagger-oauth.js
     handleOauth2Login: function (auth) {
-        var host = window.location;
+        var host = window.top.location;
         var pathname = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
         var defaultRedirectUrl = host.protocol + '//' + host.host + pathname + '/o2c.html';
         var redirectUrl = window.oAuthRedirectUrl || defaultRedirectUrl;
@@ -23856,7 +23856,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       pre = $('<audio controls>').append($('<source>').attr('src', url).attr('type', contentType));
     } else if(headers.location || headers.Location) {
       // Location header based redirect download
-      window.location = response.url;
+      window.top.location = response.url;
 
       // Anything else (CORS)
     } else {
