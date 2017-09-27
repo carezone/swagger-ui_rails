@@ -1,5 +1,5 @@
 module Swagger
   module UiRails
-    VERSION = "0.1.7"
+    VERSION = "2.1.3-dev"
   end
 end
